@@ -28,10 +28,11 @@ const interacted = loadInteracted();
   const isLoggedIn = await loadCookies(page);
   if (!isLoggedIn) {
     console.log("🔐 Giriş yap, sonra ENTER'a bas...");
-    await new Promise(resolve => require("readline").createInterface({
-      input: process.stdin,
-      output: process.stdout
-    }).question("Devam için ENTER >", resolve));
+    await new Promise(resolve =>
+      require("readline")
+        .createInterface({ input: process.stdin, output: process.stdout })
+        .question("Devam için ENTER >", resolve)
+    );
     await saveCookies(page);
   }
 
@@ -41,6 +42,7 @@ const interacted = loadInteracted();
     console.log(`➡️ @${username} takipçileri işleniyor...`);
     await page.goto(`https://www.instagram.com/${username}/followers/`, { waitUntil: "networkidle2" });
     await autoScroll(page);
+
     const followers = await getFollowersFromList(page, Math.min(limit, DAILY_LIMIT - processed));
 
     for (const user of followers) {
