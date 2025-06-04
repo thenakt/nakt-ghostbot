@@ -1,5 +1,9 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
+
+// Render'da Chrome'u elle tanımlıyoruz:
+process.env.PUPPETEER_EXECUTABLE_PATH = "/usr/bin/google-chrome";
+
 const targets = JSON.parse(fs.readFileSync("./targetAccounts.json", "utf-8"));
 
 const {
@@ -22,6 +26,7 @@ const interacted = loadInteracted();
   try {
     const browser = await puppeteer.launch({
       headless: true,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
 
