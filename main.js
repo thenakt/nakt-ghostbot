@@ -19,28 +19,29 @@ let processed = 0;
 const interacted = loadInteracted();
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    headless: true, // sunucu için zorunlu
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  });
+
   const page = await browser.newPage();
   await page.setViewport({ width: 1200, height: 800 });
-
   await page.goto("https://www.instagram.com/", { waitUntil: "networkidle2" });
 
   const isLoggedIn = await loadCookies(page);
   if (!isLoggedIn) {
-    console.log("🔐 Giriş yap, sonra ENTER'a bas...");
-    await new Promise(resolve =>
-      require("readline")
-        .createInterface({ input: process.stdin, output: process.stdout })
-        .question("Devam için ENTER >", resolve)
-    );
-    await saveCookies(page);
+    console.log("🔐 Otomatik giriş başarısız. Lütfen ilk çalıştırmada manuel giriş yapıp cookie kaydet.");
+    await browser.close();
+    return;
   }
 
   for (const { username, limit } of targets) {
     if (processed >= DAILY_LIMIT) break;
 
     console.log(`➡️ @${username} takipçileri işleniyor...`);
-    await page.goto(`https://www.instagram.com/${username}/followers/`, { waitUntil: "networkidle2" });
+    await page.goto(`https://www.instagram.com/${username}/followers/`, {
+      waitUntil: "networkidle2"
+    });
     await autoScroll(page);
 
     const followers = await getFollowersFromList(page, Math.min(limit, DAILY_LIMIT - processed));
@@ -50,7 +51,9 @@ const interacted = loadInteracted();
       if (interacted[user]?.liked && interacted[user]?.storyViewed) continue;
 
       try {
-        await page.goto(`https://www.instagram.com/${user}/`, { waitUntil: "networkidle2" });
+        await page.goto(`https://www.instagram.com/${user}/`, {
+          waitUntil: "networkidle2"
+        });
         await page.waitForTimeout(2000);
 
         let liked = interacted[user]?.liked || false;

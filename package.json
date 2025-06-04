@@ -1,17 +1,16 @@
 {
   "name": "nakt-ghostbot",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Instagram bot for liking, viewing stories and tracking activity",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "thenakt",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^16.5.0",
-    "playwright": "^1.52.0",
-    "puppeteer": "^24.10.0"
+    "puppeteer": "^24.10.0",
+    "playwright": "^1.52.0"
   }
 }
