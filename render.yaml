@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: worker  # 🔁 Burada 'web' yerine 'worker' yazıyoruz
     name: nakt-ghostbot
     env: node
     plan: free

@@ -1,8 +1,8 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 
-// Render'da Chromium kurulduğu yol:
-process.env.PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium";
+// Replit'te chromium path'i bilinmiyor, bu satırı aşağıda loglayacağız
+// Geçici olarak ENV kullanmıyoruz, doğrudan path loglayacağız
 
 const targets = JSON.parse(fs.readFileSync("./targetAccounts.json", "utf-8"));
 
@@ -26,9 +26,11 @@ const interacted = loadInteracted();
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
+
+    // 🔍 PATH'i öğreniyoruz
+    console.log("👉 Chromium PATH:", browser._process.spawnfile);
 
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 800 });
