@@ -1,8 +1,8 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 
-// Render'da Chrome'u elle tanımlıyoruz:
-process.env.PUPPETEER_EXECUTABLE_PATH = "/usr/bin/google-chrome";
+// Render'da Chromium kurulduğu yol:
+process.env.PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium";
 
 const targets = JSON.parse(fs.readFileSync("./targetAccounts.json", "utf-8"));
 
